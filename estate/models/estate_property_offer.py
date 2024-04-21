@@ -93,4 +93,3 @@ class EstateOffer(models.Model):
 #     def update_other_class_field(self):
 #         other_class = self.env['other.class'].browse(self.other_class_id.id)
 #         other_class.write({'field_to_update': 'New Value'})
-#         return True
