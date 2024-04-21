@@ -42,7 +42,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.PORT }}
         script: |
-          docker load < /path/to/destination/odoo:latest
+          docker load < /home/toters/docker/17.0/odoo:latest
           docker stop odoo || true
           docker rm odoo || true
           docker run -d -p 8069:8069 --name odoo --link db:db -t local/odoo
