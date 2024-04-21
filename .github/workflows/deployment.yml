@@ -32,7 +32,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.PORT }}
         source: "local/odoo:latest"
-        target: "/path/to/destination"
+        target: "/home/toters/docker/17.0"
 
     - name: Deploy Docker container on server
       uses: appleboy/ssh-action@master
