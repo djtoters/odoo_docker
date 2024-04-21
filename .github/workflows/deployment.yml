@@ -27,6 +27,10 @@ jobs:
     - name: Save Docker image
       run: docker save local/odoo:latest -o odoo_image.tar
 
+    - name: Change file permissions
+      run: chmod 644 odoo_image.tar
+    
+
     - name: Copy Docker image to server
       uses: appleboy/scp-action@master
       with:
