@@ -39,7 +39,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.PORT }}
         source: "odoo_image.tar"
-        target: "/home/toters/docker/17.0/odoo_image.tar"
+        target: "/home/toters/docker/docker/17.0/odoo_image.tar"
 
     - name: Load and Deploy Docker image on server
       uses: appleboy/ssh-action@master
@@ -49,7 +49,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: ${{ secrets.PORT }}
         script: |
-          docker load -i /home/toters/docker/17.0/odoo_image.tar
+          docker load -i /home/toters/docker/docker/17.0/odoo_image.tar
           docker stop odoo || true
           docker rm odoo || true
           docker run -d -p 8069:8069 --name odoo local/odoo:latest
