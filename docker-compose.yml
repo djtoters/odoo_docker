@@ -1,0 +1,88 @@
+networks:
+  odoo_backend:
+    name: odoo_backend
+
+  frontend:
+    name: frontend
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    environment: 
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        - POSTGRES_USER=${POSTGRES_USER}
+    volumes: 
+        - ${POSTGRES_DATA_PATH}:/var/lib/postgresql/data
+    networks: 
+        - odoo_backend
+    restart: always
+
+
+  odoo_runner_17:
+    image: odoo_runner:17.0
+    build:
+      context: ./build/17.0
+    container_name: odoo_runner_17
+    environment:
+      - ODOO_RC=/etc/odoo/odoo.conf
+    networks:
+      - odoo_backend
+    volumes: 
+      - ${ODOO_SRC}/odoo:/opt/odoo
+      # - ${ODOO_SRC}/enterprise17:/opt/odoo/enterprise_addons
+      - ./conf/17.0:/etc/odoo
+      - ${ODOO_DATA_PATH}/odoo17:/root/.local/share/Odoo
+    ports:
+      - 8069:8069
+      - 8072:8072
+    
+
+  # mailcatcher:
+  #   image: schickling/mailcatcher
+  #   container_name: mailcatcher
+  #   networks:
+  #     - odoo_backend
+  #   ports:
+  #     - 1080:1080
+  #   restart: always
+
+  # odoo_runner_15:
+  #   image: odoo_runner:15.0
+  #   build:
+  #     context: ./build/15.0
+  #   container_name: odoo_runner_15
+  #   environment:
+  #     - ODOO_RC=/etc/odoo/odoo.conf
+  #   networks:
+  #     - odoo_backend
+  #   volumes:
+  #     - ${ODOO_SRC}/odoo15:/opt/odoo
+  #     - ${ODOO_SRC}/enterprise15:/opt/odoo/enterprise_addons
+  #     - ./conf/15.0:/etc/odoo
+  #     - ${ODOO_DATA_PATH}/odoo15:/root/.local/share/Odoo
+  #   ports:
+  #     - 8069:8069
+  #     - 8072:8072
+
+  # odoo_runner_16:
+  #   image: odoo_runner:16.0
+  #   build:
+  #     context: ./build/16.0
+  #   container_name: odoo_runner_16
+  #   environment:
+  #     - ODOO_RC=/etc/odoo/odoo.conf
+  #   networks:
+  #     - odoo_backend
+  #   volumes:
+  #     - ${ODOO_SRC}/odoo16:/opt/odoo
+  #     - ${ODOO_SRC}/enterprise16:/opt/odoo/enterprise_addons
+  #     - ./conf/16.0:/etc/odoo
+  #     - ${ODOO_DATA_PATH}/odoo16:/root/.local/share/Odoo
+  #   ports:
+  #     - 8069:8069
+  #     - 8072:8072
+
+
+  
+        
