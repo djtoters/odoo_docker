@@ -31,7 +31,7 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: .
-        file: /odoo_docker/build/17.0/Dockerfile
+        file: ./build/17.0/Dockerfile
         push: true
         tags: toters/odoo:latest
         
