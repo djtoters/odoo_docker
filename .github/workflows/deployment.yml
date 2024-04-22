@@ -12,17 +12,17 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Install flake8
-      run: python -m pip install flake8
-    - name: Check Python code with flake8
-      run: |
-        flake8 --ignore=F401,W292,E501,W293,W291,W391 || exit $?
-
-
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
+    - name: Install flake8
+      run: python -m pip install flake8
+
+    - name: Check Python code with flake8
+      run: |
+        flake8 --ignore=F401,W292,E501,W293,W291,W391 || exit $?
+      if: ${{ failure() }}
 
     - name: Login to Docker Hub
       uses: docker/login-action@v1
@@ -30,6 +30,20 @@ jobs:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
           
+    - name: Check Python code with pylint
+      run: |
+        pylint_exit_code=0
+        pylint --disable=C0114,E0401,E1101,R0903 $(git ls-files '*.py') || pylint_exit_code=$?
+        if [ $pylint_exit_code -ne 0 ] && [ $pylint_exit_code -ne 30 ]; then
+          echo "Pylint found errors. Exiting..."
+          exit 1
+        fi
+        pylint_score=$(pylint --score=n $(git ls-files '*.py') | awk '{print $2}')
+        if (( $(echo "$pylint_score < 9" | bc -l) )); then
+          echo "Pylint score is below 9. Exiting..."
+          exit 1
+        fi
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v2
       with:
@@ -54,7 +68,3 @@ jobs:
           docker stop db || true
           docker rm db || true
           docker run -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres --name db postgres:15
-
-  
-
-
