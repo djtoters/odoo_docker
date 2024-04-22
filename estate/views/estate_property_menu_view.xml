@@ -1,9 +1,0 @@
-<odoo>
-    <!--menu-->
-    <menuitem id="estate_menu_root" name="Real Estate" sequence="10" web_icon="estate,static/description/odoo_icon.png"/>
-        <menuitem id="advertisement_menu" name="Advertisements" parent="estate.estate_menu_root" sequence="10"/>
-            <menuitem id="properties_menu_action" name="Properties" parent="estate.advertisement_menu" action="estate_model_action" sequence="20"/>
-        <menuitem id="settings_menu" name="Settings" parent="estate.estate_menu_root" sequence="25"/>
-            <menuitem id="property_type_menu_action" name="Property Type" parent="estate.settings_menu" action="estate_model_type_action" sequence="10"/>
-            <menuitem id="property_tag_menu_action" name="Property Tag" parent="estate.settings_menu" action="estate_model_tag_action" sequence="20"/>
-</odoo>
