@@ -2,13 +2,19 @@ name: Deploy Odoo on Server
 on:
   push:
     branches:
-      - main
+      - staging
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: Check if commit contains 'PR' flag
+      run: |
+        if ! git log --format=%B --no-merges -n 1 | grep -q 'PR'; then
+          echo "Commit does not contain 'PR' flag, skipping push to main branch."
+          exit 78
+        fi
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
     - name: Install flake8
@@ -16,8 +22,6 @@ jobs:
     - name: Check Python code with flake8
       run: |
         flake8 --ignore=F401,W292,E501,W293,W291,W391
-      continue-on-error: false
-   
     - name: Login to Docker Hub
       uses: docker/login-action@v1
       with:
@@ -46,22 +50,3 @@ jobs:
           docker stop db || true
           docker rm db || true
           docker run -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres --name db postgres:15
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
