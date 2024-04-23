@@ -1,4 +1,4 @@
-ame: Deploy Odoo on Server
+name: Deploy Odoo on Server
 on:
   push:
     branches:
