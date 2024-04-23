@@ -52,17 +52,12 @@ jobs:
           docker rm db || true
           docker run -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres --name db postgres:15
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    - name: Create PR from staging to main
+      if: success()
+      uses: peter-evans/create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: staging
+        base: main
+        title: Automated PR from staging to main
+        body: Automated pull request created from successful deployment to staging.
