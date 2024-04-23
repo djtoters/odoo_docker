@@ -52,10 +52,3 @@ jobs:
           docker rm db || true
           docker run -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres --name db postgres:15
 
-
-          - uses: actions/checkout@v4
-
-      # Make changes to pull request here
-
-    - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v6
