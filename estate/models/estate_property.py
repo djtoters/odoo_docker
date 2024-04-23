@@ -9,7 +9,7 @@ class EstateProperty(models.Model):
     _rec_name = 'title'
     _order = 'sequence, id desc'
 
-    @api.depends("living_area", "garden_area")s
+    @api.depends("living_area", "garden_area")
     def _compute_total(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
