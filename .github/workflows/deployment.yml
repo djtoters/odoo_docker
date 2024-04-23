@@ -53,4 +53,11 @@ jobs:
           docker run -d -e POSTGRES_USER=odoo -e POSTGRES_PASSWORD=odoo -e POSTGRES_DB=postgres --name db postgres:15
   
     - name: Create Pull Request
+      if: success()                         # Ne crée la PR que si le déploiement est réussi
       uses: peter-evans/create-pull-request@v6
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: staging
+        base: main
+        title: Automated PR from staging to main
+        body: Automated pull request created from successful deployment to staging.
