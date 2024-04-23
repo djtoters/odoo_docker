@@ -2,7 +2,7 @@ name: Deploy Odoo on Server
 on:
   push:
     branches:
-      - main
+      - staging
 jobs:
   deploy:
     runs-on: ubuntu-latest
