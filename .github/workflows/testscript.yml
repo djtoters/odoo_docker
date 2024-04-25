@@ -20,13 +20,20 @@ jobs:
       run: |
         flake8 --ignore=F401,W292,E501,W293,W291,W391
       continue-on-error: false
-      
-   
+
     - name: Login to Docker Hub
       uses: docker/login-action@v1
       with:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./build/17.0/Dockerfile
+        push: true
+        tags: toters/odoo:latest
         
    
         
